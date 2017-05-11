@@ -1,0 +1,23 @@
+var onRun = function(context) {
+  var selection = context.selection,
+      selectionCount = [selection count]
+
+  function sentenceCase(string){
+    var sentenceRegExp = /(^|\.\s+)([a-z])/g
+
+    return string
+      .toLowerCase()
+      .replace(sentenceRegExp, function sentenceCaseReplacer(match, _, letter) {
+        return match.replace(letter, letter.toUpperCase())
+      })
+  }
+
+  for (var i = 0; i < selectionCount; i++) {
+    var layer = [selection objectAtIndex:i]
+
+    if([layer class] === MSTextLayer){
+      var sentenceCaseString = sentenceCase([layer stringValue]);
+      [layer replaceTextPreservingAttributeRanges:sentenceCaseString]
+    }
+  }
+}

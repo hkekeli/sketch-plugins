@@ -1,0 +1,94 @@
+var onRun = function(context) {
+    (function(context){
+
+        // grab the IJ context
+        var iconJar = [SBApplication applicationWithBundleIdentifier:"com.iconjar.iconjar"];
+        var document = context.document;
+
+        var selectedLayers = document.selectedLayers().layers();
+        var selectedCount = selectedLayers.length;
+
+        // make sure we have a selection
+        if(selectedCount === 0) {
+            document.showMessage('Please select layers to export to IconJar.');
+            return;
+        }
+
+        // work out base directory
+        var baseDir = NSTemporaryDirectory();
+
+        // work out format
+        var plugin = [iconJar plugin:"com.iconjar.integration.sketch"];
+        var pluginOptions = JSON.parse([plugin options]);
+        var format = null;
+
+        // format is based on IconJar's plugin format
+        // option which is set in the prefs
+        switch(parseInt(pluginOptions.format)) {
+            default:
+            case 1: {
+                format = 'svg';
+                break;
+            }
+            case 2: {
+                format = 'pdf';
+                break;
+            }
+            case 3: {
+                format = 'png';
+                break;
+            }
+            case 4: {
+                format = 'webp';
+                break;
+            }
+        }
+
+        // method for actually exporting each slice
+        var layerNamesUsed = {};
+        function process() {
+            // iterate over the selected layers
+            var exported = [];
+            for(var i = 0; i < selectedCount; i++) {
+                var layer = selectedLayers[i];
+                var proposedName = layer.name();
+                if(proposedName.length === 0) {
+                    proposedName = 'layer';
+                }
+                var used = layerNamesUsed[proposedName];
+                if(typeof(used) !== 'undefined') {
+                    used++;
+                    layerNamesUsed[proposedName] = used;
+                    proposedName = proposedName+'.'+used;
+                } else {
+                    layerNamesUsed[proposedName] = 0;
+                }
+                var file = baseDir + proposedName + '.' + format;
+                var sliceAncestry = [MSImmutableLayerAncestry ancestryWithMSLayer:layer];
+                var rect = [MSSliceTrimming trimmedRectForLayerAncestry:sliceAncestry];
+                var slices = [MSExportRequest exportRequestsFromExportableLayer:layer inRect:rect useIDForName:false];
+                var slice = null;
+                if(slices.count() > 0) {
+                    slice = slices[0];
+                    slice.scale = 1;
+                    slice.format = format;
+                }
+                [document saveArtboardOrSlice:slice toFile:file];
+                exported.push(file);
+            }
+            return exported;
+        }
+
+        // method to tell IconJar to open and show import
+        // sheet with files
+        function tellIj(files) {
+            // tell IJ about them
+            [iconJar activate];
+            [iconJar import:files intoCollection:null fromApplication:@"Sketch"];
+        }
+
+        // perform the request
+        tellIj(process());
+
+    })(context);
+};

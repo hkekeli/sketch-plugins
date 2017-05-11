@@ -1,0 +1,23 @@
+var onRun = function(context) {
+  var selection = context.selection,
+      selectionCount = [selection count]
+
+  function titleCase(string){
+    var titleRegExp = /\b([a-z])[A-Za-z]*\b/g
+
+    return string
+      .toLowerCase()
+      .replace(titleRegExp, function titleCaseReplacer(match, letter) {
+        return letter.toUpperCase() + match.substr(1)
+      })
+  }
+
+  for (var i = 0; i < selectionCount; i++) {
+    var layer = [selection objectAtIndex:i]
+
+    if([layer class] === MSTextLayer){
+      var sentenceCaseString = titleCase([layer stringValue]);
+      [layer replaceTextPreservingAttributeRanges:sentenceCaseString]
+    }
+  }
+}
