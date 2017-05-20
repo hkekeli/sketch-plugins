@@ -1,0 +1,29 @@
+@import 'main.js'
+
+let kDefaultsDontShowOnStartup = "com.melludowise.Sketch-Plugin-Manager.dont-show-on-startup"
+
+function showManager(context) {
+    debug(function() {
+        run(context)
+    })
+}
+
+function checkForUpdates(context) {
+    debug(function() {
+        run(context, true, true)
+    })
+}
+
+function startup(context) {
+    debug(function() {
+        // Check if user checked box to not check for updates on startup
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let dontShowOnStartup = defaults.boolForKey(kDefaultsDontShowOnStartup)
+
+        if (dontShowOnStartup) {
+            return
+        }
+
+        run(context, true, false)
+    })
+}
