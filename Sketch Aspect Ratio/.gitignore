@@ -1,0 +1,6 @@
+/node_modules/
+/dist/
+/build/
+/src/custom-ratios/
+
+.DS_Store
