@@ -1,0 +1,81 @@
+@import "utils.js"
+
+var updateLayout = function(context) {
+  // Global variables
+  initContext(context)
+  // Get all artboards in the current page
+  var artboards = page.artboards(),
+      artboardLoop = artboards.objectEnumerator()
+  // Create a loop which iterates through every artboard
+  while (artboard = artboardLoop.nextObject()) {
+    // Get all layers from the current artboard in the loop
+    var layers = artboard.layers(),
+        layerLoop = layers.objectEnumerator()
+    loopThrough(layerLoop, function(layer) {
+      var constraintsForLayer = command.valueForKey_onLayer(constraintsKey, layer)
+      processLayer(layer, JSON.parse(constraintsForLayer))
+    })
+  }
+}
+
+var onRun = function(context) {
+  // Global variables
+  initContext(context)
+  // "Edit Constraints" window
+  function editConstraints() {
+    // Get the current layer
+    var currentLayer = (selection.count() > 0) ? selection[0] : false
+    // Check if constraints can be applied to the current layer
+    if (error(selection, currentLayer, artboard)) {
+      return
+    }
+    // Get constraints and create window
+    var constraintsForLayer = command.valueForKey_onLayer(constraintsKey, currentLayer)
+    var window = createWindow(currentLayer),
+        alert = window[0],
+        inputs = window[1]
+    // Fill inputs with current values if the current layer already has constraints
+    if (constraintsForLayer) {
+      var constraintsContent = JSON.parse(constraintsForLayer)
+      layerConstraints = fillInputs(constraintsContent, inputs)
+    }
+    // Get response from the window
+    var response = alert.runModal()
+    // Store values from inputs
+    var values = {
+      top: getStringValue(inputs[6]),
+      right: getStringValue(inputs[7]),
+      bottom: getStringValue(inputs[8]),
+      left: getStringValue(inputs[9]),
+      horizontally: getStateValue(inputs[4]),
+      vertically: getStateValue(inputs[5]),
+      width:            (Number(inputs[0].state()) && !Number(inputs[10].state())) ? getStringValue(inputs[1]) : null,
+      widthProportion:  (Number(inputs[0].state()) &&  Number(inputs[10].state())) ? getStringValue(inputs[1]) : null,
+      height:           (Number(inputs[2].state()) && !Number(inputs[11].state())) ? getStringValue(inputs[3]) : null,
+      heightProportion: (Number(inputs[2].state()) &&  Number(inputs[11].state())) ? getStringValue(inputs[3]) : null
+    }
+    // Delete null values
+    for (var key in values) {
+      if (values[key] == null) delete values[key]
+    }
+    // If "OK" button is pressed
+    if (response == "1000") {
+      updateConstraintsForLayer(currentLayer, values)
+      // Update Layout
+      updateLayout(context)
+    }
+    // If "Cancel" button is pressed and the current layer already has constraints
+    else if (response == "1001" && layerConstraints) {
+      updateConstraintsForLayer(currentLayer, values)
+    }
+    // If "Remove Constraints" button is pressed
+    else if (response == "1002") {
+      // Update constraints if the current layer already has constraints
+      if (layerConstraints) updateConstraintsForLayer(currentLayer, values)
+      // Relaunch window
+      editConstraints()
+    }
+  }
+  // Launch window
+  editConstraints()
+}
