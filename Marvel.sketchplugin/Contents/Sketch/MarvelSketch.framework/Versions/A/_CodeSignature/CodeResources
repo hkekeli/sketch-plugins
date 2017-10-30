@@ -6,11 +6,11 @@
 	<dict>
 		<key>Resources/Assets.car</key>
 		<data>
-		I2dbS1TEuiebjAHSHsxB74U11Zs=
+		xJpgdc9zZhpowMX+zLBJ4Bbh7Pk=
 		</data>
 		<key>Resources/Info.plist</key>
 		<data>
-		0Bv0XnLrBBPF99M86ci5lhQ1/14=
+		7o9hxjuhWjtfufmthXvkye4oIcU=
 		</data>
 		<key>Resources/MSFActionBarView.nib</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Resources/MSFShortcutViewController.nib</key>
 		<data>
-		GTrsWSvIoEIhQAZ+lXSLG8Aa2BM=
+		C++mj3yPxXTrnDFq5uV/IrV7teE=
 		</data>
 		<key>Resources/MSFShortcutWindowController.nib</key>
 		<data>
@@ -31,22 +31,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			I2dbS1TEuiebjAHSHsxB74U11Zs=
+			xJpgdc9zZhpowMX+zLBJ4Bbh7Pk=
 			</data>
 			<key>hash2</key>
 			<data>
-			RG1dWXynPXFhCOsro/Cy5QLr2mms5Zl6ef3nrxi/1kU=
+			E9pH/U+KWK0o98fxCN10k3g6PCEdYCKEoz2AeayiH4o=
 			</data>
 		</dict>
 		<key>Resources/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			0Bv0XnLrBBPF99M86ci5lhQ1/14=
+			7o9hxjuhWjtfufmthXvkye4oIcU=
 			</data>
 			<key>hash2</key>
 			<data>
-			am12g4gJ0uct2l7UVFcLtdLkqQVngr0YzMQ+bJiU7uk=
+			Bs3GJmtI3xqxs15bKfBr6vRk6nDwZUffgJG8ZJ7PUBY=
 			</data>
 		</dict>
 		<key>Resources/MSFActionBarView.nib</key>
@@ -64,11 +64,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GTrsWSvIoEIhQAZ+lXSLG8Aa2BM=
+			C++mj3yPxXTrnDFq5uV/IrV7teE=
 			</data>
 			<key>hash2</key>
 			<data>
-			5RD9nAj9X9yqU7ru63Eo4bSXDktjl3L7Ht/Gtgo4Fl8=
+			bpfKuiZ03HnF4oUpTf82PTZBSESluUTruMdPTW1KIUw=
 			</data>
 		</dict>
 		<key>Resources/MSFShortcutWindowController.nib</key>
